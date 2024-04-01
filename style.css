@@ -22,7 +22,7 @@
 									 "b4 b5 b6 bplus" 
 									 "b7 b8 b9 bdiv"
 									 "bpoint b0 beq bmin";      
-				gap:10px;
+				gap:1vw;
 			}
 			
 			
@@ -33,11 +33,11 @@
   align-items:center;
   justify-content:center;
   position: relative;
-  padding: 15px 30px;
+  padding: 1vw 3vw;
   border: 1px solid;
   border-image: linear-gradient(180deg, #ff3000, #ed0200, #ff096c, #d50082);
   border-image-slice: 1;
-  margin: 10px 20px;
+  margin: 1vw 2vw;
   
   font-family: 'Montserrat', sans-serif;
   font-size: 5vh;
@@ -55,11 +55,11 @@
   align-items:center;
   justify-content:center;
   position: relative;
-  padding: 15px 30px;
+  padding: 1vw 3vw;
   border: 1px solid;
   border-image: linear-gradient(180deg, #ff3000, #ed0200, #ff096c, #d50082);
   border-image-slice: 1;
-  margin: 10px 20px;
+  margin: 1vw 2vw;
   
   font-family: 'Montserrat', sans-serif;
   font-size: 15vh;
