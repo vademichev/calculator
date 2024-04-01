@@ -5,124 +5,8 @@
         <meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="manifest" href="manifest.json">
-        <style>
-            *{ /*CSS ресет*/
-                margin: 0px;
-                padding: 0px;
-                box-sizing: border-box;
-            }
-			.container{
-				display:grid;
-				height:100vh;
-				min-height:fit-content;
-				
-				width:100vw;
-				min-width:500px;
-				max-width:1200px;
-				margin:auto;
-				
-				background-color:black;
-				grid-template-columns: 1fr 1fr 1fr 1fr;
-				grid-template-rows: 2fr repeat(5,1fr);
-				grid-template-areas: "scr scr scr scr"
-				                     "bC bCE bMS bMR" 
-									 "b1 b2 b3 bmul"
-									 "b4 b5 b6 bplus" 
-									 "b7 b8 b9 bdiv"
-									 "bpoint b0 beq bmin";      
-				gap:10px;
-			}
-			
-			
-.button {
-  text-decoration: none;
-  color: white;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  position: relative;
-  padding: 15px 30px;
-  border: 1px solid;
-  border-image: linear-gradient(180deg, #ff3000, #ed0200, #ff096c, #d50082);
-  border-image-slice: 1;
-  margin: 10px 20px;
-  
-  font-family: 'Montserrat', sans-serif;
-  font-size: 5vh;
-  text-transform: uppercase;
-  overflow: hidden;
-  letter-spacing: 2px;
-  z-index:2;
-  background-color:transparent;
-  transition: .8s cubic-bezier(.165, .84, .44, 1);
-}
-.screen {
-  text-decoration: none;
-  color: white;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  position: relative;
-  padding: 15px 30px;
-  border: 1px solid;
-  border-image: linear-gradient(180deg, #ff3000, #ed0200, #ff096c, #d50082);
-  border-image-slice: 1;
-  margin: 10px 20px;
-  
-  font-family: 'Montserrat', sans-serif;
-  font-size: 15vh;
-  text-transform: uppercase;
-  overflow: hidden;
-  letter-spacing: 2px;
-  z-index:2;
-  background-color:transparent;
-  transition: .8s cubic-bezier(.165, .84, .44, 1);
-}
-.button:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 0;
-  width: 100%;
-  z-index: -1;
-  color: white;
-  background: linear-gradient(180deg, #ff4419, #ed0200, #ff096c, #d50082);
-  transition: .8s cubic-bezier(.165, .84, .44, 1);
-}
-.button:hover {
-  background: rgba(255, 255, 255, 0);
-  z-index:5;
-}
-.button:hover:before {
-  bottom: 0%;
-  top: auto;
-  height: 100%;
-}
-	.screen{grid-area: scr;}
-	.b1{grid-area:b1;}
-	.b2{grid-area:b2;}
-	.b3{grid-area:b3;}
-	.b4{grid-area:b4;}
-	.b5{grid-area:b5;}
-	
-	.b6{grid-area:b6;}
-	.b7{grid-area:b7;}
-	.b8{grid-area:b8;}
-	.b9{grid-area:b9;}
-	.b0{grid-area:b0;}
-			
-	.bplus{grid-area:bplus;}
-	.bmin{grid-area:bmin;}
-	.bmul{grid-area:bmul;}
-	.bpoint{grid-area:bpoint;}
-	.beq{grid-area:beq;}
-	
-	.bC{grid-area: bC;}
-	.bCE{grid-area: bCE;}
-	.bMR{grid-area: bMR;}
-	.bMS{grid-area: bMS;}
-</style>
+        
+           
 <script type="text/javascript">
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/serviceworker.js')
@@ -134,6 +18,7 @@
                 });
             }
 </script>
+<link rel="stylesheet" href="style.css">
 <script>
 	window.onload=Load; // Повесили обработчик на загрузку окна
 	let currDeistv = "";// Обьявление переменных
