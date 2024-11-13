@@ -5,9 +5,13 @@
         <meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="manifest" href="manifest.json">
-        
-           
-<script type="text/javascript">
+<script>
+  if (typeof navigator.serviceWorker !== 'undefined') {
+    navigator.serviceWorker.register('sw.js')
+  }
+</script>   
+<!--<script>
+	
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('serviceworker.js')
                 .then(function(registration) {
@@ -17,7 +21,7 @@
                     console.log('Service worker registration failed, error:', error);
                 });
             }
-</script>
+</script>-->
 <link rel="stylesheet" href="style.css">
 <script>
 	window.onload=Load; // Повесили обработчик на загрузку окна
