@@ -9,6 +9,7 @@
   if (typeof navigator.serviceWorker !== 'undefined') {
     navigator.serviceWorker.register('serviceworker.js')
   }
+
 </script>   
 <!--<script>
 	
@@ -24,6 +25,7 @@
 </script>-->
 <link rel="stylesheet" href="style.css">
 <script>
+	
 	window.onload=Load; // Повесили обработчик на загрузку окна
 	let currDeistv = "";// Обьявление переменных
 	let Arg=0;
@@ -117,6 +119,8 @@
 </script>
 </head>
 		<body>
+			<button id="install" hidden>Установить на телефон</button>
+			
 			<div class="container">
 				<div class="screen"></div>
 				
@@ -146,4 +150,33 @@
 				
 			</div>
 		</body>
+<script>
+	let installPrompt = null;
+	const installButton = document.querySelector("#install");
+
+	window.addEventListener("beforeinstallprompt", (event) => {
+	  	event.preventDefault();
+  		installPrompt = event;
+  		installButton.removeAttribute("hidden");
+		});
+	// main.js
+
+	installButton.addEventListener("click", async () => {
+ 		 if (!installPrompt) {
+		    return;
+		  }
+		  const result = await installPrompt.prompt();
+  		 alert(`Результат установки: ${result.outcome}`);
+ 		 disableInAppInstallPrompt();
+	});
+
+function disableInAppInstallPrompt() {
+  installPrompt = null;
+  installButton.setAttribute("hidden", "");
+}
+window.addEventListener("appinstalled", () => {
+  disableInAppInstallPrompt();
+});
+
+</script>
 </html>
