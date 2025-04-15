@@ -6,23 +6,12 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="manifest" href="manifest.json">
 <script>
-  if (typeof navigator.serviceWorker !== 'undefined') {
-    navigator.serviceWorker.register('serviceworker.js')
+  if (typeof navigator.serviceWorker !== 'undefined') { // Если браузер поддерживает serviceworker
+    navigator.serviceWorker.register('serviceworker.js') //Зарегистрировать serviceworker из файла.
   }
 
 </script>   
-<!--<script>
-	
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('serviceworker.js')
-                .then(function(registration) {
-                    console.log('Registration successful, scope is:', registration.scope);
-                })
-                .catch(function(error) {
-                    console.log('Service worker registration failed, error:', error);
-                });
-            }
-</script>-->
+
 <link rel="stylesheet" href="style.css">
 <script>
 	
@@ -119,8 +108,8 @@
 </script>
 </head>
 		<body>
-			<button id="install" hidden>Установить на телефон</button>
-			
+			<button id="install" class="button" hidden>Установить на телефон</button>
+			<!-- Кнопочка для установки приложения hidden - по умолчанию ее не видно-->
 			<div class="container">
 				<div class="screen"></div>
 				
@@ -151,31 +140,33 @@
 			</div>
 		</body>
 <script>
-	let installPrompt = null;
-	const installButton = document.querySelector("#install");
+	// Этот код нужен для добавления кнопки установки приложения, если оно не установлено в системе
+	let installPrompt = null; // Создается запрос на установку
+	const installButton = document.querySelector("#install");// Получаем кнопку из документа 
 
-	window.addEventListener("beforeinstallprompt", (event) => {
-	  	event.preventDefault();
-  		installPrompt = event;
-  		installButton.removeAttribute("hidden");
+	window.addEventListener("beforeinstallprompt", function(event){ // Вешаем на окно обработчик события 
+						 // beforeinstallprompt которое выдает PWA при открытии
+						// На устройстве которое поддерживает установку
+		event.preventDefault();  // Запрещает обработку события по умолчанию                
+		installPrompt = event;    // запоминает ссылку на запрос на установку           
+  		installButton.removeAttribute("hidden"); // Проявляем кнопку, убирая атрибут 'hidden'
 		});
-	// main.js
 
-	installButton.addEventListener("click", async () => {
- 		 if (!installPrompt) {
+	installButton.addEventListener("click", async function()  {  // Добавляем обработчик события на кнопку
+ 		 if (!installPrompt) { // Если нет вдруг ссылки на запрос на установку то завершаем функцию
 		    return;
 		  }
-		  const result = await installPrompt.prompt();
-  		 alert(`Результат установки: ${result.outcome}`);
- 		 disableInAppInstallPrompt();
+		  const result = await installPrompt.prompt(); // Ждем ответа пользователя на предложение установить приложение
+  		 alert(`Результат установки: ${result.outcome}`); // Выводим результат
+ 		 disableInAppInstallPrompt(); // Запрещаем далее выдавать запрос на установку
 	});
 
-function disableInAppInstallPrompt() {
-  installPrompt = null;
-  installButton.setAttribute("hidden", "");
+function disableInAppInstallPrompt() {  // Запрет запроса на установку 
+  installPrompt = null; // убираем ссылку на запрос
+  installButton.setAttribute("hidden", ""); // Ставим на кнопку атрибут 'hidden'
 }
-window.addEventListener("appinstalled", () => {
-  disableInAppInstallPrompt();
+window.addEventListener("appinstalled", function()  { // при событии 'appinstalled' приложение установлено
+  disableInAppInstallPrompt();   // Спрятать запрос на его установку.
 });
 
 </script>
