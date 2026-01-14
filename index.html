@@ -1,173 +1,131 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title> Раскладка грид</title>
-        <meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="manifest" href="manifest.json">
-<script>
-  if (typeof navigator.serviceWorker !== 'undefined') { // Если браузер поддерживает serviceworker
-    navigator.serviceWorker.register('serviceworker.js') //Зарегистрировать serviceworker из файла.
-  }
-
-</script>   
-
-<link rel="stylesheet" href="style.css">
-<script>
-	
-	window.onload=Load; // Повесили обработчик на загрузку окна
-	let currDeistv = "";// Обьявление переменных
-	let Arg=0;
-	let Memory=0;
-	function Load()
-	{
-		let elements = document.querySelectorAll(".bnum");
-		// Получить набор элементов, которые удовлетворяют условию
-		for (let i = 0; i < elements.length; i++) {
-			elements[i].onclick=NumClick; // Вешаю обработчки каждому элементу
-		}
-		// Применить для каждого элемента метод
-		elements = document.querySelectorAll(".deist");
-		for (let i = 0; i < elements.length; i++) {
-			elements[i].onclick=DeistClick; // Вешаю обработчки каждому элементу
-		}
-
-		elements = document.querySelectorAll(".func");
-		for (let i = 0; i < elements.length; i++) {
-			elements[i].onclick=FuncClick; // Вешаю обработчки каждому элементу
-		}
-
-		let ravno = document.querySelector(".beq");
-		ravno.onclick=RavnoClick;
-	}
-	function FuncClick()
-	{
-		let element = this; // Получили элемент создавший событие
-		let deist = element.innerHTML;
-		let screen = document.querySelector(".screen"); 
-		if(deist=="C")
-		{
-			screen.innerHTML="";
-			currDeistv="";
-			Arg=0;
-		}
-		if(deist=="CE")
-		{
-			screen.innerHTML="";
-		}
-		if (deist=="MS")
-		{
-			Memory = screen.innerHTML;
-		}
-		if (deist=="MR")
-		{
-			screen.innerHTML=Memory;
-		}
-	}
-	function RavnoClick()
-	{
-		if(currDeistv!="")
-		{
-			let screen = document.querySelector(".screen"); // Получает экран
-			let Brg = screen.innerHTML;
-			Arg = Number(Arg);
-			Brg = Number(Brg);
-			let res=0;
-			if(currDeistv=="+")
-			{
-				res = Arg+Brg;
-			}else if (currDeistv=="-")
-			{
-				res = Arg-Brg;
-			}else if (currDeistv=="*")
-			{
-				res = Arg*Brg;
-			}else if (currDeistv=="/")
-			{
-				res = Arg/Brg;
-			}
-			screen.innerHTML=res;
-		}
-	}
-	function DeistClick()
-	{
-		let element = this;
-		let deist = element.innerHTML;
-		currDeistv=deist;
-		let screen = document.querySelector(".screen"); // Получает экран
-		Arg=screen.innerHTML; // И кладем туда num
-		screen.innerHTML="";
-	}
-	function NumClick() // Обработчик нажатия
-	{
-		let butPressed = this;// this - ссылка на элемент создавший событие
-		let num = butPressed.innerHTML; // Берет с кнопки циферку на ней
-		let screen = document.querySelector(".screen"); // Получает экран
-		screen.innerHTML=screen.innerHTML+num; // И кладем туда num
-	}
-</script>
+<head>
+  <title>Раскладка грид</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
 </head>
-		<body>
-			<button id="install"  hidden>Установить на телефон</button>
-			<!-- Кнопочка для установки приложения hidden - по умолчанию ее не видно-->
-			<div class="container">
-				<div class="screen"></div>
-				
-				<div class="button b1 bnum">1</div>
-				<div class="button b2 bnum">2</div>
-				<div class="button b3 bnum">3</div>
-				<div class="button b4 bnum">4</div>
-				<div class="button b5 bnum">5</div>
-				<div class="button b6 bnum">6</div>
-				<div class="button b7 bnum">7</div>
-				<div class="button b8 bnum">8</div>
-				
-				<div class="button b9 bnum">9</div>
-				<div class="button b0 bnum">0</div>
-				
-				<div class="button deist bplus">+</div>
-				<div class="button deist bmin">-</div>
-				<div class="button beq">=</div>
-				<div class="button deist bmul">*</div>
-				<div class="button deist bdiv">/</div>
-				<div class="button bpoint">.</div>
+<body>
+  <button id="install" hidden>Установить на телефон</button>
+  <div class="container">
+    <div class="screen"></div>
+    <div class="button b1 bnum">1</div>
+    <div class="button b2 bnum">2</div>
+    <div class="button b3 bnum">3</div>
+    <div class="button b4 bnum">4</div>
+    <div class="button b5 bnum">5</div>
+    <div class="button b6 bnum">6</div>
+    <div class="button b7 bnum">7</div>
+    <div class="button b8 bnum">8</div>
+    <div class="button b9 bnum">9</div>
+    <div class="button b0 bnum">0</div>
+    <div class="button deist bplus">+</div>
+    <div class="button deist bmin">-</div>
+    <div class="button beq">=</div>
+    <div class="button deist bmul">*</div>
+    <div class="button deist bdiv">/</div>
+    <div class="button bpoint">.</div>
+    <div class="button func bC">C</div>
+    <div class="button func bCE">CE</div>
+    <div class="button func bMS">MS</div>
+    <div class="button func bMR">MR</div>
+  </div>
 
-				<div class="button func bC">C</div>
-				<div class="button func bCE">CE</div>
-				<div class="button func bMS">MS</div>
-				<div class="button func bMR">MR</div>
-				
-			</div>
-		</body>
-<script>
-	// Этот код нужен для добавления кнопки установки приложения, если оно не установлено в системе
-	let installPrompt = null; // Создается запрос на установку
-	const installButton = document.querySelector("#install");// Получаем кнопку из документа 
+  <script>
+    // Регистрация Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('serviceworker.js')
+          .then(reg => console.log('SW registered:', reg))
+          .catch(err => console.error('SW registration failed:', err));
+      });
+    }
 
-	window.addEventListener("beforeinstallprompt", function(event){ // Вешаем на окно обработчик события 
-						 // beforeinstallprompt которое выдает PWA при открытии
-						// На устройстве которое поддерживает установку
-		event.preventDefault();  // Запрещает обработку события по умолчанию                
-		installPrompt = event;    // запоминает ссылку на запрос на установку           
-  		installButton.removeAttribute("hidden"); // Проявляем кнопку, убирая атрибут 'hidden'
-		});
+    // Логика калькулятора
+    let currDeistv = "";
+    let Arg = 0;
+    let Memory = 0;
 
-	installButton.addEventListener("click", async function()  {  // Добавляем обработчик события на кнопку
- 		 if (!installPrompt) { // Если нет вдруг ссылки на запрос на установку то завершаем функцию
-		    return;
-		  }
-		  const result = await installPrompt.prompt(); // Ждем ответа пользователя на предложение установить приложение
-  		 alert(`Результат установки: ${result.outcome}`); // Выводим результат
- 		 disableInAppInstallPrompt(); // Запрещаем далее выдавать запрос на установку
-	});
+    function Load() {
+      document.querySelectorAll(".bnum").forEach(el => el.onclick = NumClick);
+      document.querySelectorAll(".deist").forEach(el => el.onclick = DeistClick);
+      document.querySelectorAll(".func").forEach(el => el.onclick = FuncClick);
+      document.querySelector(".beq").onclick = RavnoClick;
+    }
 
-function disableInAppInstallPrompt() {  // Запрет запроса на установку 
-  installPrompt = null; // убираем ссылку на запрос
-  installButton.setAttribute("hidden", ""); // Ставим на кнопку атрибут 'hidden'
-}
-window.addEventListener("appinstalled", function()  { // при событии 'appinstalled' приложение установлено
-  disableInAppInstallPrompt();   // Спрятать запрос на его установку.
-});
+    function FuncClick() {
+      const deist = this.innerHTML;
+      const screen = document.querySelector(".screen");
+      if (deist === "C") {
+        screen.innerHTML = "";
+        currDeistv = "";
+        Arg = 0;
+      } else if (deist === "CE") {
+        screen.innerHTML = "";
+      } else if (deist === "MS") {
+        Memory = screen.innerHTML;
+      } else if (deist === "MR") {
+        screen.innerHTML = Memory;
+      }
+    }
 
-</script>
+    function RavnoClick() {
+      if (currDeistv !== "") {
+        const screen = document.querySelector(".screen");
+        const Brg = parseFloat(screen.innerHTML) || 0;
+        Arg = parseFloat(Arg) || 0;
+        let res = 0;
+        switch (currDeistv) {
+          case "+": res = Arg + Brg; break;
+          case "-": res = Arg - Brg; break;
+          case "*": res = Arg * Brg; break;
+          case "/": res = Arg / Brg; break;
+        }
+        screen.innerHTML = res;
+      }
+    }
+
+    function DeistClick() {
+      currDeistv = this.innerHTML;
+      const screen = document.querySelector(".screen");
+      Arg = screen.innerHTML;
+      screen.innerHTML = "";
+    }
+
+    function NumClick() {
+      const num = this.innerHTML;
+      const screen = document.querySelector(".screen");
+      screen.innerHTML += num;
+    }
+
+    window.onload = Load;
+  </script>
+
+  <!-- Код установки PWA -->
+  <script>
+    let installPrompt = null;
+    const installButton = document.getElementById('install');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      installPrompt = e;
+      installButton.removeAttribute('hidden');
+    });
+
+    installButton.addEventListener('click', async () => {
+      if (!installPrompt) return;
+      const result = await installPrompt.prompt();
+      console.log('Install result:', result.outcome);
+      installPrompt = null;
+      installButton.setAttribute('hidden', '');
+    });
+
+    window.addEventListener('appinstalled', () => {
+      installPrompt = null;
+      installButton.setAttribute('hidden', '');
+    });
+  </script>
+</body>
 </html>
