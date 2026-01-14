@@ -1,14 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <title>Раскладка грид</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <!-- Основные заголовки -->
+  <title>Раскладка грид</title>
+
+  <!-- Manifest для Android и других браузеров -->
   <link rel="manifest" href="manifest.json">
+
+  <!-- Иконка для Android и общих целей -->
+  <link rel="icon" type="image/jpeg" href="logo192.jpg">
+
+  <!-- Иконка для iOS (обязательно!) -->
+  <link rel="apple-touch-icon" href="logo192.jpg">
+
+  <!-- Метатеги для полноэкранного режима на iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Calculator">
+
+  <!-- Тема для Safari (на новых iOS) -->
+  <meta name="theme-color" content="#3367D6">
+
+  <!-- Стили -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <button id="install" hidden>Установить на телефон</button>
+  <!-- Кнопка / Инструкция для установки -->
+  <div id="install-instruction" style="
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    background: #333;
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    text-align: center;
+    z-index: 1000;
+    display: none;
+  ">
+    <!-- Текст будет подставляться скриптом -->
+  </div>
+
+  <!-- Основной интерфейс калькулятора -->
   <div class="container">
     <div class="screen"></div>
     <div class="button b1 bnum">1</div>
@@ -33,25 +71,22 @@
     <div class="button func bMR">MR</div>
   </div>
 
+  <!-- Логика калькулятора -->
   <script>
-    // Регистрация Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('serviceworker.js')
-          .then(reg => console.log('SW registered:', reg))
-          .catch(err => console.error('SW registration failed:', err));
-      });
-    }
-
-    // Логика калькулятора
     let currDeistv = "";
     let Arg = 0;
     let Memory = 0;
 
     function Load() {
-      document.querySelectorAll(".bnum").forEach(el => el.onclick = NumClick);
-      document.querySelectorAll(".deist").forEach(el => el.onclick = DeistClick);
-      document.querySelectorAll(".func").forEach(el => el.onclick = FuncClick);
+      document.querySelectorAll(".bnum").forEach(function(el) {
+        el.onclick = NumClick;
+      });
+      document.querySelectorAll(".deist").forEach(function(el) {
+        el.onclick = DeistClick;
+      });
+      document.querySelectorAll(".func").forEach(function(el) {
+        el.onclick = FuncClick;
+      });
       document.querySelector(".beq").onclick = RavnoClick;
     }
 
@@ -103,28 +138,83 @@
     window.onload = Load;
   </script>
 
-  <!-- Код установки PWA -->
+  <!-- Регистрация Service Worker -->
   <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('serviceworker.js')
+          .then(function(reg) {
+            console.log('Service Worker зарегистрирован:', reg.scope);
+          })
+          .catch(function(err) {
+            console.error('Ошибка регистрации SW:', err);
+          });
+      });
+    }
+  </script>
+
+  <!-- Установка PWA: Android + iOS -->
+  <script>
+    // Проверяем, запущено ли приложение как установленное (standalone)
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+      || window.navigator.standalone === true; // для старых iOS
+
+    // Проверяем, iOS ли это
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+    // Элемент с инструкцией
+    const installBox = document.getElementById('install-instruction');
+
+    // Если приложение НЕ установлено
+    if (!isStandalone) {
+      if (isIOS) {
+        // Инструкция для iOS
+        installBox.innerHTML = `
+          <strong>Добавьте калькулятор на главный экран!</strong><br>
+          1. Нажмите на значок <b>«Поделиться»</b> в Safari (квадрат со стрелкой)<br>
+          2. Пролистайте вниз и выберите <b>«На экран „Домой“»</b><br>
+          3. Нажмите <b>«Добавить»</b>
+        `;
+        installBox.style.display = 'block';
+      } else {
+        // Для Android — показываем кнопку установки (если появится beforeinstallprompt)
+        // Но пока просто скрываем, так как событие придет позже
+      }
+    }
+
+    // --- Обработка установки на Android ---
     let installPrompt = null;
-    const installButton = document.getElementById('install');
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      installPrompt = e;
-      installButton.removeAttribute('hidden');
+    window.addEventListener('beforeinstallprompt', function(event) {
+      event.preventDefault();
+      installPrompt = event;
+      if (!isStandalone && !isIOS) {
+        installBox.innerHTML = `
+          <button id="install-btn" style="
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 8px;
+          ">Установить калькулятор на телефон</button>
+        `;
+        installBox.style.display = 'block';
+
+        document.getElementById('install-btn').addEventListener('click', async function() {
+          if (installPrompt) {
+            const result = await installPrompt.prompt();
+            installPrompt = null;
+            installBox.style.display = 'none';
+          }
+        });
+      }
     });
 
-    installButton.addEventListener('click', async () => {
-      if (!installPrompt) return;
-      const result = await installPrompt.prompt();
-      console.log('Install result:', result.outcome);
-      installPrompt = null;
-      installButton.setAttribute('hidden', '');
-    });
-
-    window.addEventListener('appinstalled', () => {
-      installPrompt = null;
-      installButton.setAttribute('hidden', '');
+    // Скрыть подсказку, если приложение уже установлено
+    window.addEventListener('appinstalled', function() {
+      installBox.style.display = 'none';
     });
   </script>
 </body>
